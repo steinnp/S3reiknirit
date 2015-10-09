@@ -1,12 +1,7 @@
-/******************************************************************************
- *  Compilation:  javac RectHV.java
- *  Execution:    none
- *  Dependencies: Point2D.java
- *
- *  Immutable data type for 2D axis-aligned rectangle.
- *
- ******************************************************************************/
+package s3;
 
+import edu.princeton.cs.algs4.Point2D;
+import edu.princeton.cs.algs4.StdDraw;
 /**
  *  The <tt>RectHV</tt> class is an immutable data type to encapsulate a
  *  two-dimensional axis-aligned rectagle with real-value coordinates.

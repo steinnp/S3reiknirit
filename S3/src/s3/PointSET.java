@@ -1,18 +1,7 @@
 
-/****************************************************************************
- *  Compilation:  javac PointSET.java
- *  Execution:    
- *  Dependencies:
- *  Author:
- *  Date:
- *
- *  Data structure for maintaining a set of 2-D points, 
- *    including rectangle and nearest-neighbor queries
- *
- *************************************************************************/
+package s3;
 
 import java.util.Arrays;
-
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.introcs.In;
 import edu.princeton.cs.introcs.Out;
