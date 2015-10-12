@@ -2,6 +2,7 @@
 package s3;
 
 
+import java.awt.geom.Point2D;
 import java.util.Arrays;
 
 import edu.princeton.cs.algs4.Point2D;
@@ -9,28 +10,119 @@ import edu.princeton.cs.introcs.In;
 import edu.princeton.cs.introcs.Out;
 
 public class KdTree {
+
+    private static final boolean VERTICAL = true; //x hnit
+    private static final boolean HORIZONTAL = false; //y hnit
+
     // construct an empty set of points
+    private Node root;
+
+    private class Node {
+        private Point2D key;
+        private Node left;
+        private Node right;
+        private boolean cutDirection;
+
+        public Node(Point2D key, boolean cutDirection) {
+            this.key = key;
+            this.cutDirection = cutDirection;
+        }
+    }
+
+    private int size;
     public KdTree() {
+        root = null;
+        size = 0;
     }
 
     // is the set empty?
     public boolean isEmpty() {
+        if(size() == 0){
+            return true;
+        }
         return false;
     }
 
     // number of points in the set
     public int size() {
-        return 0;
+        return size(root);
     }
 
+    public int size(point2D p){
+        if(p == null){
+            return 0;
+        }
+        else{
+            return 1 + size(root.left) + size(root.right);
+        }
+    }
     // add the point p to the set (if it is not already in the set)
     public void insert(Point2D p) {
-
+        if(root == null){
+            root = new Node(p, VERTICAL);
+        }
+        else{
+            insert(root, p, root.cutDirection);
+        }
     };
+
+    private void insert(Node node, Point2D p, boolean cDirection) {
+        //we are inspecting a node which cuts the tree vertically
+        if(cDirection == VERTICAL){
+            //x coordinate of the inserted node is lower than the nodes node.
+            if(node.key.getX() > p.key.getX()){
+                //insert into left side of the tree.
+                if(node.left == null){
+                    node.left == new Node(p, HORIZONTAL);
+                }
+                else{
+                    insert(node.left, p, node.left.cutDirection);
+                }
+            }
+            //x coordinate of the inserted node is higher than the nodes node.
+            else{
+                //insert into right side of the tree.
+                if(node.right == null){
+                    node.right == new Node(p, HORIZONTAL);
+                }
+                else{
+                    insert(node.right, p, node.right.cutDirection);
+                }
+            }
+            //we are inspecting a node which cuts the tree horizontally
+            else{
+                //y coordinate of the inserted node is lower than the nodes node.
+                if (node.key.getY() > p.key.getY()) {
+                    //insert into left side of the tree.
+                    if (node.left == null) {
+                        node.left == new Node(p, VERTICAL);
+                    } else {
+                        insert(node.left, p, node.left.cutDirection);
+                    }
+                }
+                //y coordinate of the inserted node is higher than the nodes node.
+                else {
+                    //insert into right side of the tree.
+                    if (node.right == null) {
+                        node.right == new Node(p, VERTICAL);
+                    } else {
+                        insert(node.right, p, node.right.cutDirection);
+                    }
+                }
+            }
+        }
 
     // does the set contain the point p?
     public boolean contains(Point2D p) {
-        return false;
+        if(root == null){
+            return false;
+        }
+        else {
+            return contains(root, p, root.cutDirection);
+        }
+    }
+
+    private boolean contains(Node ) {
     }
 
     // draw all of the points to standard draw
