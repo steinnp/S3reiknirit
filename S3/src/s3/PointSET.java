@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.introcs.In;
@@ -62,14 +63,15 @@ public class PointSET {
     	if(p == null){
     		return null;
     	}
-    	Point2D floor = set.floor(p);
-    	Point2D ceiling = set.ceiling(p);
-    	if(p.distanceTo(floor) < p.distanceTo(ceiling)){
-    		return floor;
+    	Point2D tempPoint = set.min();
+    	double minDist = p.distanceTo(tempPoint);
+    	for(Point2D s : set){
+    		if(s.distanceTo(p) < minDist){
+    			tempPoint = s;
+    			minDist = s.distanceTo(p);
+    		}
     	}
-    	else{
-    		return ceiling;
-    	}
+    	return tempPoint;
     }
 
     public static void main(String[] args) {
