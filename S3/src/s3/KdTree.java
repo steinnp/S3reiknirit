@@ -2,7 +2,7 @@
 package s3;
 
 
-import java.awt.geom.Point2D;
+//import java.awt.geom.Point2D;
 import java.util.Arrays;
 
 import edu.princeton.cs.algs4.Point2D;
@@ -48,12 +48,12 @@ public class KdTree {
         return size(root);
     }
 
-    public int size(point2D p){
-        if(p == null){
+    public int size(Node node){
+        if(node == null){
             return 0;
         }
         else{
-            return 1 + size(root.left) + size(root.right);
+            return 1 + size(node.left) + size(node.right);
         }
     }
     // add the point p to the set (if it is not already in the set)
@@ -70,10 +70,10 @@ public class KdTree {
         //we are inspecting a node which cuts the tree vertically
         if(cDirection == VERTICAL){
             //x coordinate of the inserted node is lower than the nodes node.
-            if(node.key.getX() > p.key.getX()){
+            if(node.key.x() > p.x()){
                 //insert into left side of the tree.
                 if(node.left == null){
-                    node.left == new Node(p, HORIZONTAL);
+                    node.left = new Node(p, HORIZONTAL);
                 }
                 else{
                     insert(node.left, p, node.left.cutDirection);
@@ -83,19 +83,20 @@ public class KdTree {
             else{
                 //insert into right side of the tree.
                 if(node.right == null){
-                    node.right == new Node(p, HORIZONTAL);
+                    node.right = new Node(p, HORIZONTAL);
                 }
                 else{
                     insert(node.right, p, node.right.cutDirection);
                 }
             }
+        }   
             //we are inspecting a node which cuts the tree horizontally
             else{
                 //y coordinate of the inserted node is lower than the nodes node.
-                if (node.key.getY() > p.key.getY()) {
+                if (node.key.y() > p.y()) {
                     //insert into left side of the tree.
                     if (node.left == null) {
-                        node.left == new Node(p, VERTICAL);
+                        node.left = new Node(p, VERTICAL);
                     } else {
                         insert(node.left, p, node.left.cutDirection);
                     }
@@ -104,7 +105,7 @@ public class KdTree {
                 else {
                     //insert into right side of the tree.
                     if (node.right == null) {
-                        node.right == new Node(p, VERTICAL);
+                        node.right = new Node(p, VERTICAL);
                     } else {
                         insert(node.right, p, node.right.cutDirection);
                     }
@@ -122,7 +123,8 @@ public class KdTree {
         }
     }
 
-    private boolean contains(Node ) {
+    private boolean contains(Node node, Point2D p, boolean cDirection ) {
+    	return false;
     }
 
     // draw all of the points to standard draw
