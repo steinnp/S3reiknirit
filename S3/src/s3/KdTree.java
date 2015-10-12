@@ -67,6 +67,9 @@ public class KdTree {
     };
 
     private void insert(Node node, Point2D p, boolean cDirection) {
+    	if(contains(p)){
+    		return;
+    	}
         //we are inspecting a node which cuts the tree vertically
         if(cDirection == VERTICAL){
             //x coordinate of the inserted node is lower than the nodes node.
@@ -124,7 +127,49 @@ public class KdTree {
     }
 
     private boolean contains(Node node, Point2D p, boolean cDirection ) {
-    	return false;
+    	if(node == null){
+    		return false;
+    	}
+    	if(node.key.equals(p)){
+    		return true;
+    	}else{
+    		if(cDirection == VERTICAL){
+                if(node.key.x() > p.x()){
+                    //insert into left side of the tree.
+                    if(node.left == null){
+                        return false;
+                    }
+                    else{
+                        return contains(node.left, p, node.left.cutDirection);
+                    }
+                }else{
+                    if(node.right == null){
+                       return false;
+                    }
+                    else{
+                        return contains(node.right, p, node.right.cutDirection);
+                    }
+                }
+    		}else{
+                if (node.key.y() > p.y()) {
+                    //insert into left side of the tree.
+                    if (node.left == null) {
+                        return false;
+                    } else {
+                        return contains(node.left, p, node.left.cutDirection);
+                    }
+                }
+                //y coordinate of the inserted node is higher than the nodes node.
+                else {
+                    //insert into right side of the tree.
+                    if (node.right == null) {
+                        return false;
+                    } else {
+                        return contains(node.right, p, node.right.cutDirection);
+                    }
+                }
+    		}
+    	}
     }
 
     // draw all of the points to standard draw
