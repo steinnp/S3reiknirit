@@ -1,34 +1,41 @@
 
 package s3;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.introcs.In;
 import edu.princeton.cs.introcs.Out;
+import edu.princeton.cs.algs4.SET;
 
 public class PointSET {
     // construct an empty set of points
-    public PointSET() {
-
+	public SET<Point2D> set; 
+    public PointSET() {	
+    	set = new SET<Point2D>();
     }
 
     // is the set empty?
     public boolean isEmpty() {
-        return false;
+        return set.isEmpty();
     }
 
     // number of points in the set
     public int size() {
-        return 0;
+        return set.size();
     }
 
     // add the point p to the set (if it is not already in the set)
     public void insert(Point2D p) {
+    	set.add(p);
     }
 
     // does the set contain the point p?
     public boolean contains(Point2D p) {
-        return false;
+        return set.contains(p);
     }
 
     // draw all of the points to standard draw
@@ -37,12 +44,32 @@ public class PointSET {
 
     // all points in the set that are inside the rectangle
     public Iterable<Point2D> range(RectHV rect) {
-        return null;
+    	Iterator<Point2D> iter = set.iterator();
+    	List<Point2D> returnList = new ArrayList<Point2D>();
+    	for(Point2D p : set){
+    		if(p.x() <= rect.xmax() && p.x() >= rect.xmin() && p.y() <= rect.ymax() && p.y() >= rect.ymin())
+    			returnList.add(p);
+    	}
+        return returnList;
     }
 
+    
     // a nearest neighbor in the set to p; null if set is empty
     public Point2D nearest(Point2D p) {
-        return p;
+    	if(set.isEmpty()){
+    		return null;
+    	}
+    	if(p == null){
+    		return null;
+    	}
+    	Point2D floor = set.floor(p);
+    	Point2D ceiling = set.ceiling(p);
+    	if(p.distanceTo(floor) < p.distanceTo(ceiling)){
+    		return floor;
+    	}
+    	else{
+    		return ceiling;
+    	}
     }
 
     public static void main(String[] args) {
