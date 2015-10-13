@@ -5,8 +5,6 @@ package s3;
 //import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
 
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.In;
@@ -233,7 +231,7 @@ public class KdTree {
             return nearest;
         }
         //if this node is closer to the point we change the nearest point value.
-        if(nearest.distanceTo(p) > node.key.distanceTo(p)){
+        if(nearest.distanceSquaredTo(p) > node.key.distanceSquaredTo(p)){
             nearest = node.key;
         }
         //if cutdirection is vertical we want to compare the x values to determine which subtree to traverse
@@ -246,46 +244,31 @@ public class KdTree {
         }
     }
 
-    private Point2D nearest(Point2D p, Node node, Point2D nearest, double pCompare, double nearestCompare){
+    private Point2D nearest(Point2D p, Node node, Point2D nearest, double pCompare, double nodeCompare){
         //if the point is on the left/lower side of the rectangle we check first in that subtree.
-        Point2D tempNearest = new Point2D(nearest.x(), nearest.y());
-        if (pCompare < nearestCompare) {
+        if (pCompare < nodeCompare) {
             //traverse the left subtree to look for a new nearest value
             if (node.left != null) {
-                if (node.left.area.distanceTo(p) < nearest.distanceTo(p)) {
-                    tempNearest = nearest(p, node.left, nearest);
-                }
-                //change the value of nearest if we found a better value
-                if (tempNearest.distanceTo(p) < nearest.distanceTo(p)) {
-                    nearest = tempNearest;
+                if (node.left.area.distanceSquaredTo(p) < nearest.distanceSquaredTo(p)) {
+                    nearest = nearest(p, node.left, nearest);
                 }
             }
             if(node.right != null) {
                 //traverse the right subtree to look for a new nearest value
-                if (node.right.area.distanceTo(p) < nearest.distanceTo(p)) {
-                    tempNearest = nearest(p, node.right, nearest);
-                }
-                //change the value of nearest if we found a better value
-                if (tempNearest.distanceTo(p) < nearest.distanceTo(p)) {
-                    nearest = tempNearest;
+                if (node.right.area.distanceSquaredTo(p) < nearest.distanceSquaredTo(p)) {
+                    nearest = nearest(p, node.right, nearest);
                 }
             }
         } else {
             //same as above but here we want to start by traversing the right subtree
             if (node.right != null) {
-                if (node.right.area.distanceTo(p) < nearest.distanceTo(p)) {
-                    tempNearest = nearest(p, node.right, nearest);
-                }
-                if (tempNearest.distanceTo(p) < nearest.distanceTo(p)) {
-                    nearest = tempNearest;
+                if (node.right.area.distanceSquaredTo(p) < nearest.distanceSquaredTo(p)) {
+                    nearest = nearest(p, node.right, nearest);
                 }
             }
             if(node.left != null){
-                if (node.left.area.distanceTo(p) < nearest.distanceTo(p)) {
-                    tempNearest = nearest(p, node.left, nearest);
-                }
-                if (tempNearest.distanceTo(p) < nearest.distanceTo(p)) {
-                    nearest = tempNearest;
+                if (node.left.area.distanceSquaredTo(p) < nearest.distanceSquaredTo(p)) {
+                    nearest = nearest(p, node.left, nearest);
                 }
             }
         }
