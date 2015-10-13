@@ -3,11 +3,14 @@ package s3;
 
 
 //import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 import edu.princeton.cs.algs4.Point2D;
-import edu.princeton.cs.introcs.In;
-import edu.princeton.cs.introcs.Out;
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.Out;
 
 public class KdTree {
 
@@ -21,11 +24,13 @@ public class KdTree {
         private Point2D key;
         private Node left;
         private Node right;
+        private RectHV area;
         private boolean cutDirection;
 
-        public Node(Point2D key, boolean cutDirection) {
+        public Node(Point2D key, boolean cutDirection, RectHV area) {
             this.key = key;
             this.cutDirection = cutDirection;
+            this.area = area;
         }
     }
 
@@ -59,7 +64,8 @@ public class KdTree {
     // add the point p to the set (if it is not already in the set)
     public void insert(Point2D p) {
         if(root == null){
-            root = new Node(p, VERTICAL);
+            RectHV area = new RectHV(0.0, 0.0, 1.0, 1.0);
+            root = new Node(p, VERTICAL, area);
         }
         else{
             insert(root, p, root.cutDirection);
@@ -76,7 +82,8 @@ public class KdTree {
             if(node.key.x() > p.x()){
                 //insert into left side of the tree.
                 if(node.left == null){
-                    node.left = new Node(p, HORIZONTAL);
+                    RectHV area = new RectHV(node.area.xmin(), node.area.ymin(), node.key.x(), node.area.ymax());
+                    node.left = new Node(p, HORIZONTAL, area);
                 }
                 else{
                     insert(node.left, p, node.left.cutDirection);
@@ -86,7 +93,8 @@ public class KdTree {
             else{
                 //insert into right side of the tree.
                 if(node.right == null){
-                    node.right = new Node(p, HORIZONTAL);
+                    RectHV area = new RectHV(node.key.x(), node.area.ymin(), node.area.xmax(), node.area.ymax());
+                    node.right = new Node(p, HORIZONTAL, area);
                 }
                 else{
                     insert(node.right, p, node.right.cutDirection);
@@ -97,18 +105,20 @@ public class KdTree {
             else{
                 //y coordinate of the inserted node is lower than the nodes node.
                 if (node.key.y() > p.y()) {
-                    //insert into left side of the tree.
+                    //insert into bottom side of the tree.
                     if (node.left == null) {
-                        node.left = new Node(p, VERTICAL);
+                        RectHV area = new RectHV(node.area.xmin(), node.area.ymin(), node.area.xmax(), node.key.y());
+                        node.left = new Node(p, VERTICAL, area);
                     } else {
                         insert(node.left, p, node.left.cutDirection);
                     }
                 }
                 //y coordinate of the inserted node is higher than the nodes node.
                 else {
-                    //insert into right side of the tree.
+                    //insert into top side of the tree.
                     if (node.right == null) {
-                        node.right = new Node(p, VERTICAL);
+                        RectHV area = new RectHV(node.area.xmin(), node.key.y(), node.area.xmax(), node.area.ymax());
+                        node.right = new Node(p, VERTICAL, area);
                     } else {
                         insert(node.right, p, node.right.cutDirection);
                     }
@@ -135,7 +145,6 @@ public class KdTree {
     	}else{
     		if(cDirection == VERTICAL){
                 if(node.key.x() > p.x()){
-                    //insert into left side of the tree.
                     if(node.left == null){
                         return false;
                     }
@@ -152,16 +161,13 @@ public class KdTree {
                 }
     		}else{
                 if (node.key.y() > p.y()) {
-                    //insert into left side of the tree.
                     if (node.left == null) {
                         return false;
                     } else {
                         return contains(node.left, p, node.left.cutDirection);
                     }
                 }
-                //y coordinate of the inserted node is higher than the nodes node.
                 else {
-                    //insert into right side of the tree.
                     if (node.right == null) {
                         return false;
                     } else {
@@ -179,7 +185,39 @@ public class KdTree {
 
     // all points in the set that are inside the rectangle
     public Iterable<Point2D> range(RectHV rect) {
-        return null;
+        if(root == null){
+            return null;
+        }
+        return range(root, rect);
+    }
+
+    private Iterable<Point2D> range(Node node, RectHV rect) {
+        if(node == null){
+            return null;
+        }
+        ArrayList<Point2D> returnList = new ArrayList<>();
+        if(node.left != null) {
+            if (rect.intersects(node.left.area)) {
+                Iterable<Point2D> set = range(node.left, rect);
+                for (Point2D p : set) {
+                   returnList.add(p);
+                }
+
+            }
+        }
+        if(rect.contains(node.key)){
+            returnList.add(node.key);
+        }
+        if(node.right != null) {
+            if(rect.intersects(node.right.area)){
+                Iterable<Point2D> set = range(node.right, rect);
+                for (Point2D p : set) {
+                    returnList.add(p);
+                }
+
+            }
+        }
+        return returnList;
     }
 
     // a nearest neighbor in the set to p; null if set is empty

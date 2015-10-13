@@ -7,25 +7,25 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../Reiknirit/lib/algs4-package.jar!/" />
+          <root url="jar://$USER_HOME$/Downloads/algs4.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$MODULE_DIR$/../../Reiknirit/lib/algs4-package.jar!/" />
+          <root url="jar://$USER_HOME$/Downloads/algs4.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../Reiknirit/lib/stdlib-package.jar!/" />
+          <root url="jar://$USER_HOME$/Downloads/stdlib.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$MODULE_DIR$/../../Reiknirit/lib/stdlib-package.jar!/" />
+          <root url="jar://$USER_HOME$/Downloads/stdlib.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
