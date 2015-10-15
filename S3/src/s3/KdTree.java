@@ -3,8 +3,10 @@ package s3;
 
 
 //import java.awt.geom.Point2D;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.In;
@@ -40,10 +42,7 @@ public class KdTree {
 
     // is the set empty?
     public boolean isEmpty() {
-        if(size() == 0){
-            return true;
-        }
-        return false;
+        return size() == 0;
     }
 
     // number of points in the set
@@ -68,7 +67,7 @@ public class KdTree {
         else{
             insert(root, p, root.cutDirection);
         }
-    };
+    }
 
     private void insert(Node node, Point2D p, boolean cDirection) {
     	if(contains(p)){
@@ -329,7 +328,5 @@ public class KdTree {
         for (int i = 0; i < nrOfPointsNear; i++) {
             out.println((i + 1) + ": " + set.nearest(pointsNear[i]));
         }
-
-        out.println();
     }
 }
