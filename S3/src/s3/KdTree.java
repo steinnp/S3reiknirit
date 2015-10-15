@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import edu.princeton.cs.algs4.Point2D;
+import edu.princeton.cs.introcs.StdDraw;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Out;
 
@@ -178,7 +179,29 @@ public class KdTree {
 
     // draw all of the points to standard draw
     public void draw() {
-
+        StdDraw.setPenRadius(0.005);
+        StdDraw.setPenColor(StdDraw.BLUE);
+        draw(root);
+        
+    }
+    private void draw(Node node){
+    	if(node == null){
+    		return;
+    	}
+    	StdDraw.setPenRadius(0.010);
+    	StdDraw.setPenColor(StdDraw.BLACK);
+    	StdDraw.point(node.key.x(), node.key.y());
+    	if(node.cutDirection == VERTICAL){
+    		StdDraw.setPenRadius(0.005);
+    		StdDraw.setPenColor(StdDraw.RED);
+    		StdDraw.line(node.key.x(), node.area.ymin(), node.key.x(), node.area.ymax());
+    	}else{
+    		StdDraw.setPenRadius(0.005);
+    		StdDraw.setPenColor(StdDraw.BLUE);
+    		StdDraw.line(node.area.xmin(), node.key.y(), node.area.xmax(), node.key.y());
+    	}
+    	draw(node.left);
+    	draw(node.right);
     }
 
     // all points in the set that are inside the rectangle
@@ -282,7 +305,7 @@ public class KdTree {
     public static void main(String[] args) {
         In in = new In();
         Out out = new Out();
-        int nrOfRecangles = in.readInt();
+        /*int nrOfRecangles = in.readInt();
         int nrOfPointsCont = in.readInt();
         int nrOfPointsNear = in.readInt();
         RectHV[] rectangles = new RectHV[nrOfRecangles];
@@ -297,12 +320,12 @@ public class KdTree {
         }
         for (int i = 0; i < nrOfPointsNear; i++) {
             pointsNear[i] = new Point2D(in.readDouble(), in.readDouble());
-        }
+        }*/
         KdTree set = new KdTree();
         for (int i = 0; !in.isEmpty(); i++) {
             double x = in.readDouble(), y = in.readDouble();
             set.insert(new Point2D(x, y));
-        }
+        }/*
         for (int i = 0; i < nrOfRecangles; i++) {
             // Query on rectangle i, sort the result, and print
             Iterable<Point2D> ptset = set.range(rectangles[i]);
@@ -328,8 +351,8 @@ public class KdTree {
         out.println("Nearest test:");
         for (int i = 0; i < nrOfPointsNear; i++) {
             out.println((i + 1) + ": " + set.nearest(pointsNear[i]));
-        }
-
+        }*/
+        set.draw();
         out.println();
     }
 }
